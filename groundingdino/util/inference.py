@@ -61,8 +61,8 @@ def predict(
 ) -> Tuple[torch.Tensor, torch.Tensor, List[str]]:
     caption = preprocess_caption(caption=caption)
 
-    model = model.to(device)
-    image = image.to(device)
+    model = model.to(device=device)
+    image = image.to(device=device)
 
     with torch.no_grad():
         outputs = model(image[None], captions=[caption])
@@ -146,7 +146,7 @@ class Model:
             model_config_path=model_config_path,
             model_checkpoint_path=model_checkpoint_path,
             device=device
-        ).to(device)
+        ).to(device=device)
         self.device = device
 
     def predict_with_caption(

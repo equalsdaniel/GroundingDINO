@@ -26,12 +26,10 @@ from torch.autograd.function import once_differentiable
 from torch.nn.init import constant_, xavier_uniform_
 
 try:
-    try:
-        from groundingdino import _C
-    except ImportError:
-        _C = None
-except:
-    warnings.warn("Failed to load custom C++ ops. Running on CPU mode Only!")
+    from groundingdino import _C
+except Exception:
+    _C = None
+    warnings.warn("Failed to load custom C++ ops for GroundingDINO. Running on CPU mode Only!")
 
 
 # helpers
@@ -63,7 +61,7 @@ class MultiScaleDeformableAttnFunction(Function):
                 ctx.im2col_step,
             )
         else:
-            output = ms_deform_attn_core_pytorch(
+            output = multi_scale_deformable_attn_pytorch(
                 value, value_spatial_shapes, sampling_locations, attention_weights
             )
         ctx.save_for_backward(
